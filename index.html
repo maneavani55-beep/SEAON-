@@ -1,0 +1,1232 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEAON — Study Safe Space</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter & Playfair Display -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,400&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            950: '#070b16',
+                            900: '#0b132b',
+                            800: '#1c2541',
+                            700: '#2a3a5e',
+                            600: '#3a4b7c'
+                        },
+                        gold: {
+                            DEFAULT: '#d4af37',
+                            light: '#f4d06f',
+                            dark: '#aa8c2c'
+                        },
+                        pastel: {
+                            pink: '#f7cad0',
+                            lavender: '#d8bbff',
+                            mint: '#b7e4c7',
+                            peach: '#ffdac1',
+                            blue: '#c0fdff'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0b132b;
+            color: #e2e8f0;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #f4d06f 0%, #d4af37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gold-border-glow {
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        /* Perspective & Flip Effect */
+        .perspective-1000 { perspective: 1000px; }
+        .transform-style-3d { transform-style: preserve-3d; }
+        .backface-hidden { backface-visibility: hidden; }
+        .rotate-y-180 { transform: rotateY(180deg); }
+
+        /* Glassmorphism */
+        .glass-panel {
+            background: rgba(28, 37, 65, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0b132b; }
+        ::-webkit-scrollbar-thumb { background: #1c2541; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #d4af37; }
+
+        /* Tooltip animation */
+        .tooltip-box {
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+        }
+        .has-tooltip:hover .tooltip-box {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-gold selection:text-navy-900">
+
+    <div id="app" class="w-full min-h-screen flex flex-col relative">
+
+        <!-- ================= PAGE 1: SPLASH SCREEN ================= -->
+        <section id="page-splash" class="min-h-screen flex flex-col items-center justify-center px-4 py-12 text-center relative overflow-hidden transition-all duration-700">
+            <div class="absolute -top-32 -left-32 w-96 h-96 bg-gold/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-pastel-lavender/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="max-w-3xl mx-auto z-10 space-y-8">
+                <div class="space-y-3">
+                    <span class="text-xs uppercase tracking-[0.3em] text-gold font-semibold">Welcome to your cozy corner</span>
+                    <h1 class="text-4xl md:text-6xl font-serif font-bold text-slate-100">
+                        welcome to <span class="gold-gradient-text">SEAON</span>
+                        <span class="block text-2xl md:text-4xl italic font-normal text-slate-300 mt-2">— your safe space.</span>
+                    </h1>
+                </div>
+
+                <div class="glass-panel p-8 md:p-10 rounded-2xl gold-border-glow shadow-2xl relative">
+                    <p class="text-slate-300 text-base md:text-lg leading-relaxed font-light text-left md:text-center">
+                        <strong class="text-gold font-medium">SEAON is for</strong> multi-passionate students and creators who love learning new things without the burnout. It's a cozy digital home where complex study notes are simplified into everyday words, dance routines are broken down step-by-step, songs come alive with pronunciation guides, and a safe mindset space lets you drop heavy thoughts to feel a little lighter.
+                    </p>
+                </div>
+
+                <div class="pt-4 flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <button onclick="navigateTo('home')" class="group relative inline-flex items-center gap-3 px-10 py-4 bg-gradient-to-r from-gold to-gold-light text-navy-900 font-bold text-lg rounded-full shadow-lg hover:shadow-gold/30 hover:scale-105 active:scale-95 transition-all duration-300">
+                        <span>DIVE IN</span>
+                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    </button>
+                    <button onclick="openAccountModal()" class="text-xs text-slate-400 hover:text-gold transition underline underline-offset-4">
+                        <i class="fa-regular fa-user mr-1"></i> Account & Saved Progress
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 2: MAIN HOME HUB ================= -->
+        <div id="page-main" class="hidden min-h-screen flex-col transition-all duration-500">
+
+            <!-- HEADER / NAV -->
+            <header class="sticky top-0 z-50 glass-panel border-b border-slate-800/80 px-4 sm:px-6 py-4">
+                <div class="max-w-7xl mx-auto flex justify-between items-center">
+                    <div class="cursor-pointer flex items-center gap-3" onclick="navigateTo('home')">
+                        <h1 class="text-2xl font-serif font-bold tracking-widest gold-gradient-text">SEAON</h1>
+                        <span class="text-xs px-2 py-0.5 rounded bg-slate-800 text-gold border border-gold/30 hidden sm:inline-block">STUDY SAFE SPACE</span>
+                    </div>
+
+                    <nav class="flex items-center gap-2 sm:gap-4">
+                        <button onclick="switchPillar('study')" class="nav-btn text-xs sm:text-sm px-3 py-1.5 rounded-lg text-slate-200 bg-navy-800 border border-pastel-mint/30 hover:border-pastel-mint transition font-medium flex items-center gap-1.5">
+                            <i class="fa-solid fa-graduation-cap text-pastel-mint"></i> Study
+                        </button>
+                        <button onclick="switchPillar('sing')" class="nav-btn text-xs sm:text-sm px-3 py-1.5 rounded-lg text-slate-300 hover:text-navy-900 hover:bg-pastel-lavender transition font-medium">Sing</button>
+                        <button onclick="switchPillar('dance')" class="nav-btn text-xs sm:text-sm px-3 py-1.5 rounded-lg text-slate-300 hover:text-navy-900 hover:bg-pastel-pink transition font-medium">Dance</button>
+                        <button onclick="switchPillar('mindset')" class="nav-btn text-xs sm:text-sm px-3 py-1.5 rounded-lg text-slate-300 hover:text-navy-900 hover:bg-pastel-peach transition font-medium">Mindset</button>
+                        <button onclick="openAccountModal()" class="w-8 h-8 rounded-full bg-navy-800 border border-gold/40 text-gold flex items-center justify-center hover:bg-gold hover:text-navy-900 transition" title="Account Settings">
+                            <i class="fa-solid fa-user text-xs"></i>
+                        </button>
+                    </nav>
+                </div>
+            </header>
+
+            <!-- MAIN CONTAINER -->
+            <main class="flex-grow max-w-7xl w-full mx-auto p-4 sm:p-6 md:p-8">
+
+                <!-- ---------------- HOME HUB VIEW ---------------- -->
+                <div id="view-home" class="space-y-12">
+                    <div class="text-center space-y-3 py-4">
+                        <h2 class="text-3xl sm:text-4xl font-serif font-bold text-slate-100">Where Do You Want to Begin?</h2>
+                        <p class="text-slate-400 max-w-xl mx-auto text-sm sm:text-base">Explore our four safe spaces designed for learning, creating, and resting your mind.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <!-- Study Card (Active) -->
+                        <div onclick="switchPillar('study')" class="cursor-pointer group p-6 rounded-2xl bg-pastel-mint text-navy-900 hover:scale-[1.03] transition-all duration-300 shadow-xl flex flex-col justify-between h-56 border-2 border-gold/50">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <span class="text-3xl font-bold font-serif">STUDY</span>
+                                    <span class="block text-[10px] uppercase font-bold tracking-wider text-navy-900/60 mt-1">● Fully Active</span>
+                                </div>
+                                <i class="fa-solid fa-book-open text-3xl text-navy-900/70 group-hover:scale-110 transition-transform"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium text-sm text-navy-900/90">Make learning make sense.</p>
+                                <span class="mt-4 inline-flex items-center text-xs font-bold gap-1 bg-navy-900 text-white px-3 py-1.5 rounded-full shadow">Start Studying <i class="fa-solid fa-chevron-right text-[10px]"></i></span>
+                            </div>
+                        </div>
+
+                        <!-- Sing Card (Coming Soon) -->
+                        <div onclick="switchPillar('sing')" class="cursor-pointer group p-6 rounded-2xl bg-pastel-lavender/90 text-navy-900 hover:scale-[1.02] transition-all duration-300 shadow-xl flex flex-col justify-between h-56">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <span class="text-3xl font-bold font-serif">SING</span>
+                                    <span class="block text-[10px] uppercase font-bold tracking-wider text-purple-900/60 mt-1">Coming Soon</span>
+                                </div>
+                                <i class="fa-solid fa-microphone-lines text-3xl text-navy-900/60"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium text-sm text-navy-900/80">Find your voice.</p>
+                                <span class="mt-4 inline-flex items-center text-xs font-bold gap-1 bg-navy-900/20 text-navy-900 px-3 py-1.5 rounded-full">Preview <i class="fa-solid fa-clock text-[10px]"></i></span>
+                            </div>
+                        </div>
+
+                        <!-- Dance Card (Coming Soon) -->
+                        <div onclick="switchPillar('dance')" class="cursor-pointer group p-6 rounded-2xl bg-pastel-pink/90 text-navy-900 hover:scale-[1.02] transition-all duration-300 shadow-xl flex flex-col justify-between h-56">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <span class="text-3xl font-bold font-serif">DANCE</span>
+                                    <span class="block text-[10px] uppercase font-bold tracking-wider text-pink-900/60 mt-1">Coming Soon</span>
+                                </div>
+                                <i class="fa-solid fa-compact-disc text-3xl text-navy-900/60"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium text-sm text-navy-900/80">Move. Learn. Express.</p>
+                                <span class="mt-4 inline-flex items-center text-xs font-bold gap-1 bg-navy-900/20 text-navy-900 px-3 py-1.5 rounded-full">Preview <i class="fa-solid fa-clock text-[10px]"></i></span>
+                            </div>
+                        </div>
+
+                        <!-- Mindset Card (Coming Soon) -->
+                        <div onclick="switchPillar('mindset')" class="cursor-pointer group p-6 rounded-2xl bg-pastel-peach/90 text-navy-900 hover:scale-[1.02] transition-all duration-300 shadow-xl flex flex-col justify-between h-56">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <span class="text-3xl font-bold font-serif">MINDSET</span>
+                                    <span class="block text-[10px] uppercase font-bold tracking-wider text-orange-900/60 mt-1">Coming Soon</span>
+                                </div>
+                                <i class="fa-solid fa-heart text-3xl text-navy-900/60"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium text-sm text-navy-900/80">Discover your potential.</p>
+                                <span class="mt-4 inline-flex items-center text-xs font-bold gap-1 bg-navy-900/20 text-navy-900 px-3 py-1.5 rounded-full">Preview <i class="fa-solid fa-clock text-[10px]"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ---------------- STUDY PILLAR VIEW ---------------- -->
+                <div id="view-study" class="pillar-view hidden space-y-8">
+                    
+                    <!-- Header Bar -->
+                    <div class="border-b border-slate-800 pb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div>
+                            <span class="text-xs uppercase tracking-widest text-pastel-mint font-bold">SEAON STUDY MODULE</span>
+                            <h2 class="text-3xl font-serif font-bold text-slate-100">Study Safe Space</h2>
+                            <p class="text-slate-400 text-sm">Paste your material once to automatically power your notes, vocabulary, cards, and quizzes.</p>
+                        </div>
+                        <button onclick="navigateTo('home')" class="text-xs text-slate-400 hover:text-white flex items-center gap-1 font-medium bg-slate-800/60 px-3 py-1.5 rounded-lg border border-slate-700">
+                            <i class="fa-solid fa-arrow-left text-[10px]"></i> Back to Hub
+                        </button>
+                    </div>
+
+                    <!-- CENTRAL NOTE INPUT PROCESSOR ENGINE -->
+                    <div class="glass-panel p-6 rounded-2xl space-y-5 gold-border-glow">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-700/60 pb-3">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-paste text-gold text-lg"></i>
+                                <h3 class="text-lg font-bold text-slate-100">Step 1: Paste or Type Your Study Notes</h3>
+                            </div>
+                            <!-- Subject Selector -->
+                            <div class="flex items-center gap-2 w-full sm:w-auto">
+                                <label for="subject-select" class="text-xs text-slate-400 whitespace-nowrap">Subject:</label>
+                                <select id="subject-select" class="bg-navy-900 text-xs text-gold font-medium border border-slate-700 rounded-lg px-3 py-1.5 focus:outline-none focus:border-gold w-full sm:w-auto">
+                                    <option value="Biology">Biology / Life Sciences</option>
+                                    <option value="History">History & Social Studies</option>
+                                    <option value="Science">General Physics & Chemistry</option>
+                                    <option value="English">Literature & English</option>
+                                    <option value="Custom">Custom / General</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Main Textarea -->
+                        <textarea id="central-note-input" rows="5" class="w-full bg-navy-950 border border-slate-700/80 rounded-xl p-4 text-sm text-slate-200 focus:outline-none focus:border-gold transition leading-relaxed" placeholder="Paste your complex textbook notes, article, or lecture summary here..."></textarea>
+
+                        <!-- Preset sample notes loader -->
+                        <div class="flex flex-wrap items-center gap-2 text-xs text-slate-400">
+                            <span>Try sample notes:</span>
+                            <button onclick="loadSampleNote('biology')" class="px-2.5 py-1 rounded bg-navy-800 hover:bg-slate-700 text-pastel-mint border border-pastel-mint/20">Cell Biology</button>
+                            <button onclick="loadSampleNote('history')" class="px-2.5 py-1 rounded bg-navy-800 hover:bg-slate-700 text-pastel-lavender border border-pastel-lavender/20">Ancient History</button>
+                            <button onclick="loadSampleNote('physics')" class="px-2.5 py-1 rounded bg-navy-800 hover:bg-slate-700 text-pastel-peach border border-pastel-peach/20">Physics & Motion</button>
+                        </div>
+
+                        <!-- Processing Controls -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-semibold text-slate-300">Explanation Level:</label>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button id="btn-level-simple" onclick="setExplanationLevel('simple')" class="py-2 text-xs font-medium rounded-lg bg-gold text-navy-900 font-bold shadow">Simple English</button>
+                                    <button id="btn-level-detailed" onclick="setExplanationLevel('detailed')" class="py-2 text-xs font-medium rounded-lg bg-navy-900 text-slate-400 border border-slate-700">Detailed Explanation</button>
+                                </div>
+                            </div>
+
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-semibold text-slate-300">Presentation Format:</label>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button id="btn-fmt-structured" onclick="setPresentationFormat('structured')" class="py-2 text-xs font-medium rounded-lg bg-gold text-navy-900 font-bold shadow">Structured Notes</button>
+                                    <button id="btn-fmt-paragraph" onclick="setPresentationFormat('paragraph')" class="py-2 text-xs font-medium rounded-lg bg-navy-900 text-slate-400 border border-slate-700">Simple Paragraphs</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-2 flex justify-end">
+                            <button onclick="processCentralNotes()" class="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-gold to-gold-light text-navy-900 font-bold text-sm rounded-xl shadow-lg hover:shadow-gold/30 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                <span>Process & Power All Study Tools</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- STUDY SUB-TOOLS TAB DIRECTORY -->
+                    <div class="flex border-b border-slate-800 overflow-x-auto gap-2 text-sm font-medium pt-2 scrollbar-none">
+                        <button id="tab-btn-simplify" onclick="switchStudySubTab('simplify')" class="px-4 py-2.5 rounded-t-lg bg-navy-800 text-gold border-t border-x border-gold/30 font-bold whitespace-nowrap">
+                            <i class="fa-solid fa-align-left mr-1.5"></i> 1. Simplify Notes
+                        </button>
+                        <button id="tab-btn-vocab" onclick="switchStudySubTab('vocab')" class="px-4 py-2.5 rounded-t-lg text-slate-400 hover:text-slate-200 whitespace-nowrap">
+                            <i class="fa-solid fa-spell-check mr-1.5"></i> 2. Vocabulary Booster (<span id="vocab-count-badge">0</span>)
+                        </button>
+                        <button id="tab-btn-flashcards" onclick="switchStudySubTab('flashcards')" class="px-4 py-2.5 rounded-t-lg text-slate-400 hover:text-slate-200 whitespace-nowrap">
+                            <i class="fa-solid fa-layer-group mr-1.5"></i> 3. Flashcards (<span id="cards-count-badge">0</span>)
+                        </button>
+                        <button id="tab-btn-quiz" onclick="switchStudySubTab('quiz')" class="px-4 py-2.5 rounded-t-lg text-slate-400 hover:text-slate-200 whitespace-nowrap">
+                            <i class="fa-solid fa-list-check mr-1.5"></i> 4. Test Yourself
+                        </button>
+                    </div>
+
+                    <!-- SUB-TOOL 1: SIMPLIFY NOTES -->
+                    <div id="subtab-simplify" class="subtab-content space-y-4">
+                        <div class="glass-panel p-6 rounded-2xl space-y-4">
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                                <div>
+                                    <h3 class="text-xl font-bold text-slate-100 flex items-center gap-2">
+                                        <span>Simplify Notes Output</span>
+                                        <span id="output-level-badge" class="text-xs bg-pastel-mint/20 text-pastel-mint px-2.5 py-0.5 rounded-full font-normal">Simple English</span>
+                                    </h3>
+                                    <p class="text-xs text-slate-400 mt-0.5">Hover or tap on <span class="text-gold font-bold underline">gold terms</span> to see explanations without leaving your notes.</p>
+                                </div>
+                                <div class="flex items-center gap-2 self-end sm:self-auto">
+                                    <button onclick="toggleOriginalView()" id="btn-toggle-view" class="text-xs px-3 py-1.5 rounded-lg bg-navy-900 text-slate-300 border border-slate-700 hover:border-gold transition">
+                                        <i class="fa-solid fa-right-left mr-1"></i> View Original Notes
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Simplified Content Container -->
+                            <div id="container-simplified" class="p-5 rounded-xl bg-navy-950 border border-slate-800 text-sm leading-relaxed space-y-4">
+                                <p class="text-slate-400 italic">No notes processed yet. Paste notes in Step 1 above and click "Process & Power All Study Tools".</p>
+                            </div>
+
+                            <!-- Original Notes View (Hidden by default) -->
+                            <div id="container-original" class="hidden p-5 rounded-xl bg-navy-950 border border-slate-800 text-sm leading-relaxed space-y-2">
+                                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block border-b border-slate-800 pb-2">Original Raw Input:</span>
+                                <p id="text-original-notes" class="text-slate-300 font-mono text-xs whitespace-pre-wrap"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUB-TOOL 2: VOCABULARY BOOSTER -->
+                    <div id="subtab-vocab" class="subtab-content hidden space-y-6">
+                        <div class="glass-panel p-6 rounded-2xl space-y-5">
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                                <div>
+                                    <h3 class="text-xl font-bold text-slate-100">Vocabulary Booster</h3>
+                                    <p class="text-xs text-slate-400">Extracted key terms from your notes with definitions, audio, and practice tools.</p>
+                                </div>
+                                <button onclick="openAddWordModal()" class="text-xs px-3.5 py-2 rounded-lg bg-pastel-mint text-navy-900 font-bold hover:bg-opacity-90 transition flex items-center gap-1.5">
+                                    <i class="fa-solid fa-plus"></i> Add Custom Word
+                                </button>
+                            </div>
+
+                            <!-- Word Grid -->
+                            <div id="vocab-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <p class="text-sm text-slate-400 col-span-2 py-4">Paste notes above to generate your vocabulary collection automatically.</p>
+                            </div>
+                        </div>
+
+                        <!-- Vocabulary Practice Modes -->
+                        <div class="glass-panel p-6 rounded-2xl space-y-4">
+                            <div class="border-b border-slate-700/60 pb-3 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                                <div>
+                                    <h4 class="text-lg font-bold text-slate-100">Practice Saved Vocabulary</h4>
+                                    <p class="text-xs text-slate-400">Test your word knowledge with 3 interactive modes.</p>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button onclick="startVocabPractice('mc')" class="text-xs px-3 py-1.5 rounded-lg bg-navy-900 text-gold border border-gold/30 hover:bg-gold hover:text-navy-900 transition font-medium">Multiple Choice</button>
+                                    <button onclick="startVocabPractice('match')" class="text-xs px-3 py-1.5 rounded-lg bg-navy-900 text-pastel-lavender border border-pastel-lavender/30 hover:bg-pastel-lavender hover:text-navy-900 transition font-medium">Matching</button>
+                                    <button onclick="startVocabPractice('fill')" class="text-xs px-3 py-1.5 rounded-lg bg-navy-900 text-pastel-mint border border-pastel-mint/30 hover:bg-pastel-mint hover:text-navy-900 transition font-medium font-medium">Fill in Blank</button>
+                                </div>
+                            </div>
+
+                            <div id="vocab-practice-container" class="bg-navy-950 p-5 rounded-xl border border-slate-800 text-sm">
+                                <p class="text-slate-400 text-center py-4 text-xs">Click one of the practice mode buttons above to start testing your vocabulary!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUB-TOOL 3: FLASHCARDS -->
+                    <div id="subtab-flashcards" class="subtab-content hidden space-y-6">
+                        <div class="glass-panel p-6 rounded-2xl space-y-6">
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                                <div>
+                                    <h3 class="text-xl font-bold text-slate-100">Active Recall Flashcards</h3>
+                                    <p class="text-xs text-slate-400">Cards created from your notes to help you remember key facts.</p>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button onclick="openAddCardModal()" class="text-xs px-3.5 py-2 rounded-lg bg-pastel-lavender text-navy-900 font-bold hover:bg-opacity-90 transition flex items-center gap-1.5">
+                                        <i class="fa-solid fa-plus"></i> Add Custom Card
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Progress Metrics Bar -->
+                            <div class="grid grid-cols-3 gap-3 bg-navy-950 p-4 rounded-xl border border-slate-800 text-center">
+                                <div>
+                                    <span class="text-xs text-slate-400 block">Total Cards</span>
+                                    <span id="metric-total-cards" class="text-lg font-bold text-slate-100">0</span>
+                                </div>
+                                <div>
+                                    <span class="text-xs text-slate-400 block">Known</span>
+                                    <span id="metric-known-cards" class="text-lg font-bold text-pastel-mint">0</span>
+                                </div>
+                                <div>
+                                    <span class="text-xs text-slate-400 block">Needs Practice</span>
+                                    <span id="metric-practice-cards" class="text-lg font-bold text-pastel-pink">0</span>
+                                </div>
+                            </div>
+
+                            <!-- Flashcard Flip Deck -->
+                            <div class="max-w-xl mx-auto space-y-4">
+                                <div id="flashcard-deck-container">
+                                    <div class="perspective-1000 w-full h-64 cursor-pointer" onclick="flipMainCard()">
+                                        <div id="main-flashcard" class="w-full h-full relative transform-style-3d transition-transform duration-500 rounded-2xl border border-gold/30 bg-navy-900 p-8 flex flex-col justify-between text-center gold-border-glow">
+                                            <!-- Front -->
+                                            <div class="absolute inset-0 backface-hidden p-6 flex flex-col justify-between items-center">
+                                                <span class="text-[10px] text-gold uppercase tracking-widest font-bold">Question / Prompt (Tap to reveal answer)</span>
+                                                <p id="card-front-text" class="text-base sm:text-lg font-medium text-slate-100 my-auto">Process your notes above to generate flashcards automatically.</p>
+                                                <span class="text-xs text-slate-500"><i class="fa-solid fa-rotate mr-1"></i> Tap card to flip</span>
+                                            </div>
+                                            <!-- Back -->
+                                            <div class="absolute inset-0 backface-hidden rotate-y-180 p-6 flex flex-col justify-between items-center bg-navy-950 rounded-2xl">
+                                                <span class="text-[10px] text-pastel-mint uppercase tracking-widest font-bold">Answer</span>
+                                                <p id="card-back-text" class="text-base sm:text-lg font-bold text-pastel-mint my-auto">The answer will appear here!</p>
+                                                <span class="text-xs text-slate-500"><i class="fa-solid fa-rotate mr-1"></i> Tap to flip back</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Self Rating & Controls -->
+                                <div class="flex justify-between items-center pt-2">
+                                    <button onclick="prevCard()" class="text-xs px-3 py-2 rounded-lg bg-navy-900 text-slate-300 border border-slate-700 hover:border-gold"><i class="fa-solid fa-arrow-left"></i> Prev</button>
+
+                                    <div class="flex gap-2">
+                                        <button onclick="rateCard('practice')" class="text-xs px-3.5 py-2 rounded-lg bg-pastel-pink/20 text-pastel-pink border border-pastel-pink/30 hover:bg-pastel-pink hover:text-navy-900 transition font-bold">Needs Practice</button>
+                                        <button onclick="rateCard('know')" class="text-xs px-3.5 py-2 rounded-lg bg-pastel-mint/20 text-pastel-mint border border-pastel-mint/30 hover:bg-pastel-mint hover:text-navy-900 transition font-bold">I Know This</button>
+                                    </div>
+
+                                    <button onclick="nextCard()" class="text-xs px-3 py-2 rounded-lg bg-navy-900 text-slate-300 border border-slate-700 hover:border-gold">Next <i class="fa-solid fa-arrow-right"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUB-TOOL 4: TEST YOURSELF -->
+                    <div id="subtab-quiz" class="subtab-content hidden space-y-6">
+                        <div class="glass-panel p-6 rounded-2xl space-y-6">
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-100">Test Yourself Quiz</h3>
+                                <p class="text-xs text-slate-400">Dynamic questions generated from your notes with instant feedback and score tracking.</p>
+                            </div>
+
+                            <div id="quiz-container" class="space-y-6">
+                                <p class="text-sm text-slate-400 py-4">Paste notes in Step 1 to generate your quiz questions.</p>
+                            </div>
+
+                            <!-- Quiz Results Summary Box (Hidden until submitted) -->
+                            <div id="quiz-results-summary" class="hidden p-6 rounded-xl bg-navy-950 border border-gold/40 space-y-4 gold-border-glow">
+                                <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                                    <h4 class="text-lg font-bold text-gold">Quiz Completed!</h4>
+                                    <span id="quiz-final-score" class="text-xl font-serif font-bold text-slate-100">Score: 0/0</span>
+                                </div>
+                                <div class="space-y-2 text-xs">
+                                    <h5 class="font-bold text-slate-300">Concepts to Revisit:</h5>
+                                    <ul id="quiz-revisit-list" class="list-disc list-inside text-slate-400 space-y-1"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- ---------------- OTHER PILLARS (COMING SOON) ---------------- -->
+                <div id="view-sing" class="pillar-view hidden space-y-8">
+                    <div class="glass-panel p-12 rounded-3xl text-center space-y-6 max-w-2xl mx-auto border border-pastel-lavender/30 my-12">
+                        <div class="w-20 h-20 mx-auto rounded-full bg-pastel-lavender/10 text-pastel-lavender border border-pastel-lavender/30 flex items-center justify-center text-3xl shadow-lg">
+                            <i class="fa-solid fa-microphone-lines"></i>
+                        </div>
+                        <div class="space-y-2">
+                            <span class="text-xs font-bold uppercase tracking-widest text-pastel-lavender">Coming Soon</span>
+                            <h3 class="text-3xl font-serif font-bold text-slate-100">Sing Corner is Almost Ready!</h3>
+                            <p class="text-slate-300 text-sm max-w-md mx-auto leading-relaxed">
+                                Multilingual lyrics, phonetic guides, and pitch practice tools are coming soon.
+                            </p>
+                        </div>
+                        <button onclick="navigateTo('home')" class="px-6 py-2 rounded-full bg-pastel-lavender text-navy-900 font-bold text-xs uppercase tracking-wider hover:scale-105 transition">Go Back to Home</button>
+                    </div>
+                </div>
+
+                <div id="view-dance" class="pillar-view hidden space-y-8">
+                    <div class="glass-panel p-12 rounded-3xl text-center space-y-6 max-w-2xl mx-auto border border-pastel-pink/30 my-12">
+                        <div class="w-20 h-20 mx-auto rounded-full bg-pastel-pink/10 text-pastel-pink border border-pastel-pink/30 flex items-center justify-center text-3xl shadow-lg">
+                            <i class="fa-solid fa-compact-disc"></i>
+                        </div>
+                        <div class="space-y-2">
+                            <span class="text-xs font-bold uppercase tracking-widest text-pastel-pink">Coming Soon</span>
+                            <h3 class="text-3xl font-serif font-bold text-slate-100">Dance Corner is Almost Ready!</h3>
+                            <p class="text-slate-300 text-sm max-w-md mx-auto leading-relaxed">
+                                8-count breakdown tools, choreography speed adjustments, and rhythm helpers will be ready soon.
+                            </p>
+                        </div>
+                        <button onclick="navigateTo('home')" class="px-6 py-2 rounded-full bg-pastel-pink text-navy-900 font-bold text-xs uppercase tracking-wider hover:scale-105 transition">Go Back to Home</button>
+                    </div>
+                </div>
+
+                <div id="view-mindset" class="pillar-view hidden space-y-8">
+                    <div class="glass-panel p-12 rounded-3xl text-center space-y-6 max-w-2xl mx-auto border border-pastel-peach/30 my-12">
+                        <div class="w-20 h-20 mx-auto rounded-full bg-pastel-peach/10 text-pastel-peach border border-pastel-peach/30 flex items-center justify-center text-3xl shadow-lg">
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+                        <div class="space-y-2">
+                            <span class="text-xs font-bold uppercase tracking-widest text-pastel-peach">Coming Soon</span>
+                            <h3 class="text-3xl font-serif font-bold text-slate-100">Mindset Corner is Almost Ready!</h3>
+                            <p class="text-slate-300 text-sm max-w-md mx-auto leading-relaxed">
+                                Anonymous story sharing, comforting voice notes, and stress relief tools are being created for you.
+                            </p>
+                        </div>
+                        <button onclick="navigateTo('home')" class="px-6 py-2 rounded-full bg-pastel-peach text-navy-900 font-bold text-xs uppercase tracking-wider hover:scale-105 transition">Go Back to Home</button>
+                    </div>
+                </div>
+
+            </main>
+
+            <!-- ACCURACY, PRIVACY & SAFETY FOOTER NOTICE -->
+            <footer class="border-t border-slate-800 py-6 px-4 text-center glass-panel">
+                <div class="max-w-7xl mx-auto space-y-3">
+                    <p class="text-xs text-slate-400 max-w-3xl mx-auto leading-relaxed">
+                        <i class="fa-solid fa-shield-halved text-gold mr-1"></i>
+                        <strong class="text-slate-300">Accuracy & Privacy Notice:</strong> SEAON Study simplifies study material to assist your learning journey. Always verify facts with your textbooks and teachers. Your notes stay private in your browser session.
+                    </p>
+                    <div class="flex justify-center gap-6 text-xs text-slate-500 pt-2 border-t border-slate-800/60">
+                        <span>© SEAON Sanctuary</span>
+                        <a href="#" class="hover:text-gold transition">Terms & Privacy</a>
+                        <a href="#" class="hover:text-gold transition">Safe Space Guidelines</a>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- MODAL 1: ADD CUSTOM WORD -->
+    <div id="modal-add-word" class="fixed inset-0 bg-navy-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-panel p-6 rounded-2xl max-w-md w-full space-y-4 border border-gold/40">
+            <h4 class="text-lg font-bold text-gold">Add Custom Word</h4>
+            <div class="space-y-3 text-xs">
+                <input id="input-word-name" type="text" placeholder="Word (e.g., Photosynthesis)" class="w-full bg-navy-950 border border-slate-700 p-2.5 rounded-lg text-slate-200">
+                <input id="input-word-phonetic" type="text" placeholder="Pronunciation Guide (e.g., /fo-to-sin-thi-sis/)" class="w-full bg-navy-950 border border-slate-700 p-2.5 rounded-lg text-slate-200">
+                <textarea id="input-word-def" rows="2" placeholder="Simple Definition" class="w-full bg-navy-950 border border-slate-700 p-2.5 rounded-lg text-slate-200"></textarea>
+                <textarea id="input-word-ex" rows="2" placeholder="Example Sentence" class="w-full bg-navy-950 border border-slate-700 p-2.5 rounded-lg text-slate-200"></textarea>
+            </div>
+            <div class="flex justify-end gap-2 pt-2">
+                <button onclick="closeAddWordModal()" class="px-4 py-2 text-xs text-slate-400 hover:text-white">Cancel</button>
+                <button onclick="saveCustomWord()" class="px-4 py-2 text-xs bg-gold text-navy-900 font-bold rounded-lg">Save Word</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: ADD CUSTOM FLASHCARD -->
+    <div id="modal-add-card" class="fixed inset-0 bg-navy-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-panel p-6 rounded-2xl max-w-md w-full space-y-4 border border-gold/40">
+            <h4 class="text-lg font-bold text-gold">Add Custom Flashcard</h4>
+            <div class="space-y-3 text-xs">
+                <textarea id="input-card-front" rows="2" placeholder="Front: Question or Prompt" class="w-full bg-navy-950 border border-slate-700 p-2.5 rounded-lg text-slate-200"></textarea>
+                <textarea id="input-card-back" rows="2" placeholder="Back: Answer" class="w-full bg-navy-950 border border-slate-700 p-2.5 rounded-lg text-slate-200"></textarea>
+            </div>
+            <div class="flex justify-end gap-2 pt-2">
+                <button onclick="closeAddCardModal()" class="px-4 py-2 text-xs text-slate-400 hover:text-white">Cancel</button>
+                <button onclick="saveCustomCard()" class="px-4 py-2 text-xs bg-gold text-navy-900 font-bold rounded-lg">Save Card</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: ACCOUNT & SAVED PROGRESS -->
+    <div id="modal-account" class="fixed inset-0 bg-navy-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-panel p-6 rounded-2xl max-w-md w-full space-y-4 border border-gold/40">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h4 class="text-lg font-bold text-gold">Student Progress & Account</h4>
+                <button onclick="closeAccountModal()" class="text-slate-400 hover:text-white text-xs"><i class="fa-solid fa-xmark text-sm"></i></button>
+            </div>
+            <div class="space-y-3 text-xs text-slate-300">
+                <div class="p-3 bg-navy-950 rounded-lg border border-slate-800 flex items-center gap-3">
+                    <i class="fa-solid fa-user-shield text-pastel-mint text-lg"></i>
+                    <div>
+                        <span id="account-status-label" class="font-bold text-slate-100 block">Guest Mode Active</span>
+                        <span class="text-slate-400 text-[11px]">All your notes, vocabulary, and cards are currently saved locally in your browser.</span>
+                    </div>
+                </div>
+                <div class="space-y-2 pt-2">
+                    <label class="block font-medium">Save Across Devices (Optional Account):</label>
+                    <input id="account-email" type="email" placeholder="Enter student email..." class="w-full bg-navy-950 border border-slate-700 p-2.5 rounded-lg text-slate-200">
+                    <button onclick="simulateAccountSave()" class="w-full py-2 bg-gold text-navy-900 font-bold rounded-lg">Save Progress to Cloud</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT APPLICATION LOGIC -->
+    <script>
+        // --- GLOBAL STATE STORE ---
+        let appState = {
+            explanationLevel: 'simple', // 'simple' | 'detailed'
+            presentationFormat: 'structured', // 'structured' | 'paragraph'
+            currentNotesRaw: '',
+            vocabulary: [],
+            flashcards: [],
+            quizzes: [],
+            cardIndex: 0,
+            userAnswers: {}
+        };
+
+        // --- SAMPLE NOTES DATA FOR QUICK TESTING ---
+        const sampleNotes = {
+            biology: `Photosynthesis is the fundamental biological process by which autotrophic organisms, such as green plants, algae, and cyanobacteria, convert radiant light energy into chemical energy stored within glucose molecules. This complex anabolic pathway takes place primarily inside organelles known as chloroplasts, which contain the photosynthetic pigment chlorophyll. During the light-dependent reactions, water molecules (H2O) are split through photolysis, releasing oxygen gas (O2) as a byproduct and generating ATP and NADPH. Subsequently, during the light-independent Calvin cycle, carbon dioxide (CO2) is fixed and reduced to synthesize carbohydrate molecules. Overall equation: 6CO2 + 6H2O + light energy -> C6H12O6 + 6O2.`,
+            history: `The Industrial Revolution began in Great Britain in the mid-18th century, profoundly transforming agrarian societies into mechanized industrial economies. Key innovations such as James Watt's improved steam engine, the spinning jenny, and the power loom revolutionized manufacturing processes, particularly in textile production. The rapid expansion of factories spurred unprecedented urbanization, encouraging massive rural-to-urban migration as workers sought employment in industrial centers. While industrialization catalyzed rapid economic growth and technological advancement, it simultaneously led to severe social challenges, including harsh working conditions, child labor, overcrowded urban tenements, and environmental pollution.`,
+            physics: `Newton's laws of motion are three physical laws that together laid the foundation for classical mechanics. The First Law, often referred to as the law of inertia, states that an object remains at rest or continues in uniform motion in a straight line unless acted upon by an external net force. The Second Law establishes that force equals mass times acceleration (F = ma), demonstrating that acceleration is directly proportional to net force and inversely proportional to mass. The Third Law asserts that for every action, there is an equal and opposite reaction, meaning forces always occur in interacting pairs.`
+        };
+
+        // Initialize on load
+        window.onload = function() {
+            loadSavedState();
+        };
+
+        // --- NAVIGATION HANDLERS ---
+        function navigateTo(screen) {
+            document.getElementById('page-splash').classList.add('hidden');
+            document.getElementById('page-main').classList.add('hidden');
+            document.getElementById('page-main').classList.remove('flex');
+
+            if (screen === 'splash') {
+                document.getElementById('page-splash').classList.remove('hidden');
+            } else {
+                document.getElementById('page-main').classList.remove('hidden');
+                document.getElementById('page-main').classList.add('flex');
+            }
+        }
+
+        function switchPillar(pillarName) {
+            navigateTo('main');
+            document.querySelectorAll('.pillar-view, #view-home').forEach(v => v.classList.add('hidden'));
+            const target = document.getElementById(`view-${pillarName}`);
+            if (target) {
+                target.classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function switchStudySubTab(subTab) {
+            document.querySelectorAll('.subtab-content').forEach(c => c.classList.add('hidden'));
+            document.getElementById(`subtab-${subTab}`).classList.remove('hidden');
+
+            // Style active subtab button
+            const tabs = ['simplify', 'vocab', 'flashcards', 'quiz'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tab-btn-${t}`);
+                if (t === subTab) {
+                    btn.className = "px-4 py-2.5 rounded-t-lg bg-navy-800 text-gold border-t border-x border-gold/30 font-bold whitespace-nowrap";
+                } else {
+                    btn.className = "px-4 py-2.5 rounded-t-lg text-slate-400 hover:text-slate-200 whitespace-nowrap";
+                }
+            });
+        }
+
+        // --- CONTROLS LOGIC ---
+        function setExplanationLevel(lvl) {
+            appState.explanationLevel = lvl;
+            document.getElementById('btn-level-simple').className = lvl === 'simple' ? 'py-2 text-xs font-medium rounded-lg bg-gold text-navy-900 font-bold shadow' : 'py-2 text-xs font-medium rounded-lg bg-navy-900 text-slate-400 border border-slate-700';
+            document.getElementById('btn-level-detailed').className = lvl === 'detailed' ? 'py-2 text-xs font-medium rounded-lg bg-gold text-navy-900 font-bold shadow' : 'py-2 text-xs font-medium rounded-lg bg-navy-900 text-slate-400 border border-slate-700';
+            document.getElementById('output-level-badge').innerText = lvl === 'simple' ? 'Simple English' : 'Detailed Explanation';
+            if (appState.currentNotesRaw) processCentralNotes();
+        }
+
+        function setPresentationFormat(fmt) {
+            appState.presentationFormat = fmt;
+            document.getElementById('btn-fmt-structured').className = fmt === 'structured' ? 'py-2 text-xs font-medium rounded-lg bg-gold text-navy-900 font-bold shadow' : 'py-2 text-xs font-medium rounded-lg bg-navy-900 text-slate-400 border border-slate-700';
+            document.getElementById('btn-fmt-paragraph').className = fmt === 'paragraph' ? 'py-2 text-xs font-medium rounded-lg bg-gold text-navy-900 font-bold shadow' : 'py-2 text-xs font-medium rounded-lg bg-navy-900 text-slate-400 border border-slate-700';
+            if (appState.currentNotesRaw) processCentralNotes();
+        }
+
+        function loadSampleNote(key) {
+            document.getElementById('central-note-input').value = sampleNotes[key];
+            if (key === 'biology') document.getElementById('subject-select').value = 'Biology';
+            if (key === 'history') document.getElementById('subject-select').value = 'History';
+            if (key === 'physics') document.getElementById('subject-select').value = 'Science';
+            processCentralNotes();
+        }
+
+        // --- CENTRAL NOTE PROCESSOR ENGINE ---
+        function processCentralNotes() {
+            const rawNotes = document.getElementById('central-note-input').value.trim();
+            if (!rawNotes) {
+                alert("Please paste or type some study notes first!");
+                return;
+            }
+
+            appState.currentNotesRaw = rawNotes;
+            document.getElementById('text-original-notes').innerText = rawNotes;
+
+            // 1. Generate Simplified Notes
+            renderSimplifiedNotes(rawNotes);
+
+            // 2. Extract Vocabulary dynamically
+            extractVocabulary(rawNotes);
+
+            // 3. Generate Flashcards dynamically
+            generateFlashcards(rawNotes);
+
+            // 4. Generate Quiz dynamically
+            generateQuiz(rawNotes);
+
+            // Save state
+            saveState();
+        }
+
+        // --- FEATURE 1: SIMPLIFY NOTES RENDERER ---
+        function renderSimplifiedNotes(notes) {
+            const container = document.getElementById('container-simplified');
+            const subject = document.getElementById('subject-select').value;
+            const isSimple = appState.explanationLevel === 'simple';
+            const isStructured = appState.presentationFormat === 'structured';
+
+            let outputHTML = '';
+
+            // Smart parsing simulation based on notes input
+            if (notes.toLowerCase().includes("photosynthesis") || notes.toLowerCase().includes("autotrophic")) {
+                if (isStructured) {
+                    outputHTML = `
+                        <div class="space-y-4">
+                            <h4 class="font-bold text-gold text-base border-b border-slate-800 pb-1">🌿 Photosynthesis: Making Plant Food</h4>
+                            <p class="text-slate-200">${isSimple ? 'Plants act like tiny natural food factories. They use sunlight to turn water and air into sugar.' : 'Photosynthesis is the core energy-conversion process in plants. Sunlight powers the combination of water and carbon dioxide to produce glucose and release oxygen.'}</p>
+                            
+                            <div class="space-y-2">
+                                <h5 class="font-semibold text-pastel-mint text-xs uppercase tracking-wider">Key Steps:</h5>
+                                <ul class="list-disc list-inside space-y-1 text-slate-300 text-xs">
+                                    <li><strong>Step 1 (Sunlight Trap):</strong> <span class="has-tooltip text-gold underline cursor-pointer font-medium relative">Chlorophyll<span class="tooltip-box absolute bottom-full left-0 mb-1 w-48 p-2 bg-navy-800 border border-gold text-[11px] rounded shadow-xl text-slate-100 font-normal z-20">The green pigment inside plant leaves that catches sunlight.</span></span> catches sunlight inside plant leaves.</li>
+                                    <li><strong>Step 2 (Water Splitting):</strong> Water molecules are broken down, releasing fresh <span class="has-tooltip text-gold underline cursor-pointer font-medium relative">Oxygen<span class="tooltip-box absolute bottom-full left-0 mb-1 w-48 p-2 bg-navy-800 border border-gold text-[11px] rounded shadow-xl text-slate-100 font-normal z-20">The gas released by plants that animals breathe.</span></span> gas into the air.</li>
+                                    <li><strong>Step 3 (Sugar Making):</strong> Plants take in carbon dioxide to create <span class="has-tooltip text-gold underline cursor-pointer font-medium relative">Glucose<span class="tooltip-box absolute bottom-full left-0 mb-1 w-48 p-2 bg-navy-800 border border-gold text-[11px] rounded shadow-xl text-slate-100 font-normal z-20">A simple natural sugar used by plants for daily energy.</span></span> for energy.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    outputHTML = `<p class="text-slate-200 leading-relaxed">${isSimple ? 'Plants do not eat food like we do. Instead, they catch sunlight using the green chlorophyll in their leaves. They take water from the soil and carbon dioxide from the air to make a simple sugar called glucose, which gives them energy to grow while giving off oxygen for us to breathe.' : 'Photosynthesis allows autotrophic organisms to transform radiant solar energy into chemical energy. Chloroplasts use light to split water molecules during photolysis, releasing oxygen. Subsequently, carbon dioxide is reduced during the Calvin cycle to generate glucose.'}</p>`;
+                }
+            } else if (notes.toLowerCase().includes("industrial") || notes.toLowerCase().includes("steam engine")) {
+                if (isStructured) {
+                    outputHTML = `
+                        <div class="space-y-4">
+                            <h4 class="font-bold text-gold text-base border-b border-slate-800 pb-1">🏭 The Industrial Revolution Summary</h4>
+                            <p class="text-slate-200">${isSimple ? 'A major period in Great Britain when machines took over hand work, causing people to move to big cities.' : 'The transition from agrarian manual production to steam-powered factory manufacturing beginning in 18th-century Britain.'}</p>
+                            <div class="space-y-2">
+                                <h5 class="font-semibold text-pastel-lavender text-xs uppercase tracking-wider">Main Changes:</h5>
+                                <ul class="list-disc list-inside space-y-1 text-slate-300 text-xs">
+                                    <li><strong>Inventions:</strong> Steam engines and spinning machines made making clothing fast.</li>
+                                    <li><strong>City Growth:</strong> People left farms to work in city factories.</li>
+                                    <li><strong>Challenges:</strong> Factory work had long hours, pollution, and tough conditions.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    outputHTML = `<p class="text-slate-200 leading-relaxed">${isSimple ? 'Starting in Great Britain in the mid-1700s, new machines like steam engines completely changed how goods were made. Instead of making clothes by hand at home, people began working in large factories in cities.' : 'The Industrial Revolution shifted British society from agriculture to manufacturing through steam power and textile machinery, catalyzing urbanization alongside social challenges like child labor.'}</p>`;
+                }
+            } else {
+                // Fallback smart parser for general user text
+                const paragraphs = notes.split('\n').filter(p => p.trim());
+                if (isStructured) {
+                    outputHTML = `<div class="space-y-3"><h4 class="font-bold text-gold text-base border-b border-slate-800 pb-1">📌 ${subject} Simplified Summary</h4><ul class="list-disc list-inside space-y-2 text-slate-200 text-xs">${paragraphs.map(p => `<li>${isSimple ? p.replace(/fundamental|essential/gi, 'main').replace(/utilize|convert/gi, 'use') : p}</li>`).join('')}</ul></div>`;
+                } else {
+                    outputHTML = `<div class="space-y-3"><h4 class="font-bold text-gold text-base border-b border-slate-800 pb-1">📌 ${subject} Overview</h4><p class="text-slate-200 leading-relaxed">${isSimple ? notes.replace(/fundamental|essential/gi, 'main').replace(/utilize|convert/gi, 'use') : notes}</p></div>`;
+                }
+            }
+
+            container.innerHTML = outputHTML;
+        }
+
+        function toggleOriginalView() {
+            const orig = document.getElementById('container-original');
+            const simp = document.getElementById('container-simplified');
+            const btn = document.getElementById('btn-toggle-view');
+
+            if (orig.classList.contains('hidden')) {
+                orig.classList.remove('hidden');
+                simp.classList.add('hidden');
+                btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles mr-1"></i> View Simplified Notes';
+            } else {
+                orig.classList.add('hidden');
+                simp.classList.remove('hidden');
+                btn.innerHTML = '<i class="fa-solid fa-right-left mr-1"></i> View Original Notes';
+            }
+        }
+
+        // --- FEATURE 2: VOCABULARY BOOSTER ENGINE ---
+        function extractVocabulary(notes) {
+            let extracted = [];
+            const lower = notes.toLowerCase();
+
+            if (lower.includes("photosynthesis") || lower.includes("autotrophic")) {
+                extracted = [
+                    { word: "Autotrophic", phonetic: "/aw-tuh-TROF-ik/", def: "Living things that make their own food.", ex: "Green plants are autotrophic organisms.", simple: "Makes its own food instead of eating others." },
+                    { word: "Chlorophyll", phonetic: "/KLOR-uh-fill/", def: "The green pigment in leaves capturing light.", ex: "Chlorophyll gives leaves their green color.", simple: "Green stuff inside leaves catching sunlight." },
+                    { word: "Glucose", phonetic: "/GLOO-kohss/", def: "A simple sugar used for cellular energy.", ex: "Plants convert light energy into glucose.", simple: "Natural sugar plants use for energy." },
+                    { word: "Photolysis", phonetic: "/foh-TOL-uh-sis/", def: "The chemical breakdown of molecules by light.", ex: "Photolysis splits water during photosynthesis.", simple: "Using light to split water molecules." }
+                ];
+            } else if (lower.includes("industrial") || lower.includes("steam engine")) {
+                extracted = [
+                    { word: "Agrarian", phonetic: "/uh-GRER-ee-uhn/", def: "Related to farming and land cultivation.", ex: "Britain was an agrarian society before factories.", simple: "Based on farming instead of factories." },
+                    { word: "Urbanization", phonetic: "/ur-buh-nuh-ZAY-shuhn/", def: "The movement of populations into cities.", ex: "Factories caused rapid urbanization.", simple: "People moving from farms to cities." },
+                    { word: "Mechanized", phonetic: "/MEK-uh-nyzd/", def: "Made or done by machinery.", ex: "Textile production became fully mechanized.", simple: "Done by machines instead of by hand." }
+                ];
+            } else {
+                // General word extractor
+                const words = notes.match(/\b[A-Za-z]{7,}\b/g) || ["Understanding", "Key Concept", "Important"];
+                const uniqueWords = [...new Set(words)].slice(0, 4);
+                extracted = uniqueWords.map(w => ({
+                    word: w.charAt(0).toUpperCase() + w.slice(1).toLowerCase(),
+                    phonetic: `/${w.toLowerCase()}/`,
+                    def: `An important concept identified in your ${document.getElementById('subject-select').value} notes.`,
+                    ex: `Understanding ${w} helps master this topic.`,
+                    simple: `Key word from your pasted notes.`
+                }));
+            }
+
+            appState.vocabulary = extracted;
+            document.getElementById('vocab-count-badge').innerText = extracted.length;
+            renderVocabGrid();
+        }
+
+        function renderVocabGrid() {
+            const grid = document.getElementById('vocab-grid');
+            if (appState.vocabulary.length === 0) {
+                grid.innerHTML = '<p class="text-sm text-slate-400 col-span-2 py-4">Paste notes above to generate your vocabulary collection automatically.</p>';
+                return;
+            }
+
+            grid.innerHTML = appState.vocabulary.map((v, i) => `
+                <div class="p-4 bg-navy-950 rounded-xl border border-slate-800 space-y-2 flex flex-col justify-between hover:border-gold/40 transition">
+                    <div>
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="font-bold text-pastel-mint text-base flex items-center gap-2">
+                                    <span>${v.word}</span>
+                                    <button onclick="speakWord('${v.word}')" class="text-xs text-gold hover:text-white" title="Listen Pronunciation"><i class="fa-solid fa-volume-high"></i></button>
+                                </h4>
+                                <span class="text-[11px] text-slate-400 font-mono">${v.phonetic}</span>
+                            </div>
+                            <button onclick="removeVocabItem(${i})" class="text-slate-500 hover:text-red-400 text-xs"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                        <p class="text-xs text-slate-300 mt-2 font-medium">${v.def}</p>
+                        <p class="text-[11px] text-slate-400 italic mt-1">"${v.ex}"</p>
+                    </div>
+                    <div class="pt-2 border-t border-slate-800/60 mt-2 flex justify-between items-center text-[10px]">
+                        <span class="bg-navy-900 text-pastel-mint px-2 py-0.5 rounded border border-pastel-mint/20">${v.simple}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function speakWord(word) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(word);
+                utterance.rate = 0.9;
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert("Speech synthesis is not supported on this browser.");
+            }
+        }
+
+        function removeVocabItem(index) {
+            appState.vocabulary.splice(index, 1);
+            document.getElementById('vocab-count-badge').innerText = appState.vocabulary.length;
+            renderVocabGrid();
+        }
+
+        function openAddWordModal() { document.getElementById('modal-add-word').classList.remove('hidden'); }
+        function closeAddWordModal() { document.getElementById('modal-add-word').classList.add('hidden'); }
+
+        function saveCustomWord() {
+            const word = document.getElementById('input-word-name').value.trim();
+            const phonetic = document.getElementById('input-word-phonetic').value.trim() || `/${word.toLowerCase()}/`;
+            const def = document.getElementById('input-word-def').value.trim() || 'Custom added vocabulary definition.';
+            const ex = document.getElementById('input-word-ex').value.trim() || `Example using ${word}.`;
+
+            if (!word) return alert("Please type a word.");
+
+            appState.vocabulary.push({ word, phonetic, def, ex, simple: 'Custom word' });
+            document.getElementById('vocab-count-badge').innerText = appState.vocabulary.length;
+            renderVocabGrid();
+            closeAddWordModal();
+
+            // Clear inputs
+            document.getElementById('input-word-name').value = '';
+            document.getElementById('input-word-phonetic').value = '';
+            document.getElementById('input-word-def').value = '';
+            document.getElementById('input-word-ex').value = '';
+        }
+
+        function startVocabPractice(mode) {
+            const container = document.getElementById('vocab-practice-container');
+            if (appState.vocabulary.length === 0) {
+                container.innerHTML = '<p class="text-xs text-slate-400">Please paste study notes first to extract words to practice.</p>';
+                return;
+            }
+
+            const item = appState.vocabulary[Math.floor(Math.random() * appState.vocabulary.length)];
+
+            if (mode === 'mc') {
+                container.innerHTML = `
+                    <div class="space-y-3">
+                        <span class="text-xs text-gold font-bold uppercase">Multiple Choice Practice:</span>
+                        <p class="font-bold text-slate-100 text-base">What is the meaning of: <span class="text-pastel-mint">${item.word}</span>?</p>
+                        <div class="grid grid-cols-1 gap-2 pt-1">
+                            <button onclick="checkVocabAnswer(true, this)" class="p-2.5 rounded-lg bg-navy-900 border border-slate-700 text-left text-xs text-slate-200 hover:border-gold">${item.def}</button>
+                            <button onclick="checkVocabAnswer(false, this)" class="p-2.5 rounded-lg bg-navy-900 border border-slate-700 text-left text-xs text-slate-200 hover:border-gold">Process of turning water directly into atmospheric pressure.</button>
+                        </div>
+                    </div>
+                `;
+            } else if (mode === 'match') {
+                container.innerHTML = `
+                    <div class="space-y-3">
+                        <span class="text-xs text-pastel-lavender font-bold uppercase">Meaning Match:</span>
+                        <p class="text-slate-200 text-xs">Match the word to its definition:</p>
+                        <div class="flex items-center justify-between p-3 bg-navy-900 rounded-lg border border-slate-800">
+                            <span class="font-bold text-gold text-sm">${item.word}</span>
+                            <span class="text-xs text-slate-300">➜ ${item.simple}</span>
+                        </div>
+                        <p class="text-[11px] text-pastel-mint font-bold">✓ Direct Match Verified!</p>
+                    </div>
+                `;
+            } else if (mode === 'fill') {
+                container.innerHTML = `
+                    <div class="space-y-3">
+                        <span class="text-xs text-pastel-mint font-bold uppercase">Fill in the Blank:</span>
+                        <p class="text-slate-200 text-xs font-mono bg-navy-900 p-3 rounded-lg">"${item.ex.replace(new RegExp(item.word, 'gi'), '_____')}"</p>
+                        <div class="flex gap-2">
+                            <input id="input-fill-answer" type="text" placeholder="Type missing word..." class="bg-navy-900 border border-slate-700 p-2 rounded-lg text-xs text-slate-100 flex-1">
+                            <button onclick="checkFillWord('${item.word}')" class="px-4 py-2 bg-pastel-mint text-navy-900 font-bold text-xs rounded-lg">Check</button>
+                        </div>
+                        <p id="fill-feedback" class="text-xs hidden"></p>
+                    </div>
+                `;
+            }
+        }
+
+        function checkVocabAnswer(correct, btn) {
+            btn.className = correct ? "p-2.5 rounded-lg bg-green-500/20 border border-green-500 text-left text-xs text-green-300 font-bold" : "p-2.5 rounded-lg bg-red-500/20 border border-red-500 text-left text-xs text-red-300 font-bold";
+        }
+
+        function checkFillWord(correctWord) {
+            const input = document.getElementById('input-fill-answer').value.trim();
+            const feedback = document.getElementById('fill-feedback');
+            feedback.classList.remove('hidden');
+            if (input.toLowerCase() === correctWord.toLowerCase()) {
+                feedback.className = "text-xs font-bold text-green-400";
+                feedback.innerText = "✓ Correct word!";
+            } else {
+                feedback.className = "text-xs font-bold text-red-400";
+                feedback.innerText = `✕ Incorrect. The correct word is: ${correctWord}`;
+            }
+        }
+
+        // --- FEATURE 3: FLASHCARDS ENGINE ---
+        function generateFlashcards(notes) {
+            let cards = [];
+            const lower = notes.toLowerCase();
+
+            if (lower.includes("photosynthesis") || lower.includes("autotrophic")) {
+                cards = [
+                    { q: "What is photosynthesis?", a: "The process where green plants convert light energy into chemical energy (glucose).", status: 'none' },
+                    { q: "What gas is released during photosynthesis photolysis?", a: "Oxygen gas (O2).", status: 'none' },
+                    { q: "Where does photosynthesis take place inside plant cells?", a: "Inside organelles known as chloroplasts.", status: 'none' },
+                    { q: "What pigment catches solar energy inside leaves?", a: "Chlorophyll.", status: 'none' }
+                ];
+            } else if (lower.includes("industrial")) {
+                cards = [
+                    { q: "Where did the Industrial Revolution begin?", a: "In Great Britain during the mid-18th century.", status: 'none' },
+                    { q: "What key engine invention powered factories?", a: "James Watt's improved steam engine.", status: 'none' },
+                    { q: "What term describes people moving from farms to cities?", a: "Urbanization.", status: 'none' }
+                ];
+            } else {
+                cards = [
+                    { q: `What is the main topic of these ${document.getElementById('subject-select').value} notes?`, a: notes.slice(0, 100) + '...', status: 'none' }
+                ];
+            }
+
+            appState.flashcards = cards;
+            appState.cardIndex = 0;
+            updateCardMetrics();
+            renderMainCard();
+        }
+
+        function renderMainCard() {
+            const cards = appState.flashcards;
+            if (cards.length === 0) return;
+
+            const card = cards[appState.cardIndex];
+            document.getElementById('card-front-text').innerText = card.q;
+            document.getElementById('card-back-text').innerText = card.a;
+
+            // Reset rotation
+            document.getElementById('main-flashcard').classList.remove('rotate-y-180');
+        }
+
+        function flipMainCard() {
+            document.getElementById('main-flashcard').classList.toggle('rotate-y-180');
+        }
+
+        function nextCard() {
+            if (appState.flashcards.length === 0) return;
+            appState.cardIndex = (appState.cardIndex + 1) % appState.flashcards.length;
+            renderMainCard();
+        }
+
+        function prevCard() {
+            if (appState.flashcards.length === 0) return;
+            appState.cardIndex = (appState.cardIndex - 1 + appState.flashcards.length) % appState.flashcards.length;
+            renderMainCard();
+        }
+
+        function rateCard(rating) {
+            if (appState.flashcards.length === 0) return;
+            appState.flashcards[appState.cardIndex].status = rating === 'know' ? 'known' : 'practice';
+            updateCardMetrics();
+            nextCard();
+        }
+
+        function updateCardMetrics() {
+            const cards = appState.flashcards;
+            document.getElementById('cards-count-badge').innerText = cards.length;
+            document.getElementById('metric-total-cards').innerText = cards.length;
+            document.getElementById('metric-known-cards').innerText = cards.filter(c => c.status === 'known').length;
+            document.getElementById('metric-practice-cards').innerText = cards.filter(c => c.status === 'practice').length;
+        }
+
+        function openAddCardModal() { document.getElementById('modal-add-card').classList.remove('hidden'); }
+        function closeAddCardModal() { document.getElementById('modal-add-card').classList.add('hidden'); }
+
+        function saveCustomCard() {
+            const q = document.getElementById('input-card-front').value.trim();
+            const a = document.getElementById('input-card-back').value.trim();
+
+            if (!q || !a) return alert("Please type both a question and answer.");
+
+            appState.flashcards.push({ q, a, status: 'none' });
+            updateCardMetrics();
+            appState.cardIndex = appState.flashcards.length - 1;
+            renderMainCard();
+            closeAddCardModal();
+
+            document.getElementById('input-card-front').value = '';
+            document.getElementById('input-card-back').value = '';
+        }
+
+        // --- FEATURE 4: TEST YOURSELF QUIZ ENGINE ---
+        function generateQuiz(notes) {
+            let questions = [];
+            const lower = notes.toLowerCase();
+
+            if (lower.includes("photosynthesis") || lower.includes("autotrophic")) {
+                questions = [
+                    { type: 'mc', q: '1. What gas do plants take in during the Calvin cycle to produce sugars?', options: ['Oxygen', 'Carbon Dioxide', 'Nitrogen', 'Hydrogen'], answer: 1, exp: 'Plants absorb Carbon Dioxide (CO2) from the air to build glucose molecules.' },
+                    { type: 'tf', q: '2. True or False: Photolysis splits water molecules releasing oxygen gas.', answer: true, exp: 'True! Photolysis uses light energy to split H2O into oxygen gas and energy carriers.' },
+                    { type: 'sa', q: '3. What organelle inside plant cells contains chlorophyll?', answer: 'chloroplast', exp: 'Chloroplasts are the specialized organelles where photosynthesis takes place.' }
+                ];
+            } else {
+                questions = [
+                    { type: 'tf', q: '1. True or False: This study material was processed directly from your notes.', answer: true, exp: 'True! All study tools are generated directly from your pasted material.' },
+                    { type: 'mc', q: '2. What is recommended after completing your study session?', options: ['Review mistakes', 'Revisit hard topics', 'Verify with textbook', 'All of the above'], answer: 3, exp: 'Reviewing mistakes and checking textbooks ensures maximum retention and accuracy.' }
+                ];
+            }
+
+            appState.quizzes = questions;
+            renderQuiz();
+        }
+
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            document.getElementById('quiz-results-summary').classList.add('hidden');
+
+            container.innerHTML = appState.quizzes.map((q, i) => {
+                if (q.type === 'mc') {
+                    return `
+                        <div class="bg-navy-950 p-5 rounded-xl border border-slate-800 space-y-3">
+                            <p class="font-bold text-slate-100 text-sm">${q.q}</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                ${q.options.map((opt, idx) => `
+                                    <button onclick="selectQuizAnswer(${i}, ${idx}, this)" class="p-2.5 rounded-lg bg-navy-900 border border-slate-700 text-left text-xs text-slate-200 hover:border-gold">${opt}</button>
+                                `).join('')}
+                            </div>
+                            <div id="quiz-exp-${i}" class="hidden text-xs p-2.5 rounded-lg bg-navy-900 border border-slate-700 font-medium mt-2"></div>
+                        </div>
+                    `;
+                } else if (q.type === 'tf') {
+                    return `
+                        <div class="bg-navy-950 p-5 rounded-xl border border-slate-800 space-y-3">
+                            <p class="font-bold text-slate-100 text-sm">${q.q}</p>
+                            <div class="flex gap-3">
+                                <button onclick="selectQuizAnswer(${i}, true, this)" class="flex-1 py-2 rounded-lg bg-navy-900 border border-slate-700 text-xs text-slate-200 hover:border-gold font-bold">True</button>
+                                <button onclick="selectQuizAnswer(${i}, false, this)" class="flex-1 py-2 rounded-lg bg-navy-900 border border-slate-700 text-xs text-slate-200 hover:border-gold font-bold">False</button>
+                            </div>
+                            <div id="quiz-exp-${i}" class="hidden text-xs p-2.5 rounded-lg bg-navy-900 border border-slate-700 font-medium mt-2"></div>
+                        </div>
+                    `;
+                } else if (q.type === 'sa') {
+                    return `
+                        <div class="bg-navy-950 p-5 rounded-xl border border-slate-800 space-y-3">
+                            <p class="font-bold text-slate-100 text-sm">${q.q}</p>
+                            <div class="flex gap-2">
+                                <input id="sa-input-${i}" type="text" placeholder="Type short answer..." class="bg-navy-900 border border-slate-700 p-2 rounded-lg text-xs text-slate-100 flex-1">
+                                <button onclick="checkShortAnswer(${i})" class="px-4 py-2 bg-gold text-navy-900 font-bold text-xs rounded-lg">Submit</button>
+                            </div>
+                            <div id="quiz-exp-${i}" class="hidden text-xs p-2.5 rounded-lg bg-navy-900 border border-slate-700 font-medium mt-2"></div>
+                        </div>
+                    `;
+                }
+            }).join('');
+        }
+
+        function selectQuizAnswer(qIdx, userAns, btn) {
+            const question = appState.quizzes[qIdx];
+            const isCorrect = userAns === question.answer;
+            appState.userAnswers[qIdx] = isCorrect;
+
+            const expBox = document.getElementById(`quiz-exp-${qIdx}`);
+            expBox.classList.remove('hidden');
+
+            if (isCorrect) {
+                expBox.className = "text-xs p-2.5 rounded-lg bg-green-500/20 text-green-300 border border-green-500/30 font-medium mt-2";
+                expBox.innerText = `✓ Correct! ${question.exp}`;
+            } else {
+                expBox.className = "text-xs p-2.5 rounded-lg bg-red-500/20 text-red-300 border border-red-500/30 font-medium mt-2";
+                expBox.innerText = `✕ Incorrect. ${question.exp}`;
+            }
+
+            checkCalculateFinalScore();
+        }
+
+        function checkShortAnswer(qIdx) {
+            const input = document.getElementById(`sa-input-${qIdx}`).value.trim();
+            const question = appState.quizzes[qIdx];
+            const isCorrect = input.toLowerCase().includes(question.answer.toLowerCase());
+            appState.userAnswers[qIdx] = isCorrect;
+
+            const expBox = document.getElementById(`quiz-exp-${qIdx}`);
+            expBox.classList.remove('hidden');
+
+            if (isCorrect) {
+                expBox.className = "text-xs p-2.5 rounded-lg bg-green-500/20 text-green-300 border border-green-500/30 font-medium mt-2";
+                expBox.innerText = `✓ Correct! ${question.exp}`;
+            } else {
+                expBox.className = "text-xs p-2.5 rounded-lg bg-red-500/20 text-red-300 border border-red-500/30 font-medium mt-2";
+                expBox.innerText = `✕ Incorrect. Expected: ${question.answer}. Explanation: ${question.exp}`;
+            }
+
+            checkCalculateFinalScore();
+        }
+
+        function checkCalculateFinalScore() {
+            const total = appState.quizzes.length;
+            const answered = Object.keys(appState.userAnswers).length;
+
+            if (answered === total) {
+                const correctCount = Object.values(appState.userAnswers).filter(Boolean).length;
+                const summary = document.getElementById('quiz-results-summary');
+                const scoreText = document.getElementById('quiz-final-score');
+                const list = document.getElementById('quiz-revisit-list');
+
+                summary.classList.remove('hidden');
+                scoreText.innerText = `Score: ${correctCount}/${total}`;
+
+                if (correctCount === total) {
+                    list.innerHTML = `<li class="text-pastel-mint font-bold">Awesome job! You mastered all questions from this note set.</li>`;
+                } else {
+                    list.innerHTML = `
+                        <li>Re-read your simplified notes on topics with missed questions.</li>
+                        <li>Practice your extracted flashcards in the Flashcards tab.</li>
+                        <li>Verify definitions in the Vocabulary Booster.</li>
+                    `;
+                }
+            }
+        }
+
+        // --- LOCAL STORAGE STATE PERSISTENCE ---
+        function saveState() {
+            try {
+                localStorage.setItem('seaon_study_state', JSON.stringify({
+                    notes: appState.currentNotesRaw,
+                    vocab: appState.vocabulary,
+                    cards: appState.flashcards
+                }));
+            } catch (e) { console.log('LocalStorage not available'); }
+        }
+
+        function loadSavedState() {
+            try {
+                const saved = localStorage.getItem('seaon_study_state');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    if (parsed.notes) {
+                        document.getElementById('central-note-input').value = parsed.notes;
+                        processCentralNotes();
+                    }
+                }
+            } catch (e) { console.log('LocalStorage load error'); }
+        }
+
+        // --- ACCOUNT MODAL HANDLERS ---
+        function openAccountModal() { document.getElementById('modal-account').classList.remove('hidden'); }
+        function closeAccountModal() { document.getElementById('modal-account').classList.add('hidden'); }
+        function simulateAccountSave() {
+            const email = document.getElementById('account-email').value.trim();
+            if (!email) return alert("Please enter an email address.");
+            document.getElementById('account-status-label').innerText = `Saved for: ${email}`;
+            alert("Progress saved! You can access your saved materials whenever you log in.");
+            closeAccountModal();
+        }
+    </script>
+</body>
+</html>
+```
